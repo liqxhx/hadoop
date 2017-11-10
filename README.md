@@ -1,7 +1,7 @@
 # hadoop1.1.2集群环境搭建
 
 ## 环境
-* [virtualbox](https://www.virtualbox.org/)
+* [virtualbox](https://www.virtualbox.org/wiki/Linux_Downloads)
 * [centos6.8_64](http://vault.centos.org/6.8/isos/x86_64/)
 * [javase6](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html)<br>
 * [hadoop-1.1.2](https://archive.apache.org/dist/hadoop/common/hadoop-1.1.2/)<br>
@@ -35,57 +35,72 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 > `生效配置`source /etc/profile
 
-## 在hadoop0上安装hadoop
-将在hadoop0作为master，hadoop1和hadoop2作为salves
+## 安装hadoop
+将在hadoop0作为master，充当namenode,secondarynamenode,jobtracker</br>
+hadoop1和hadoop2作为salves,充当datanode,tasktracker</br>
+<b>PS:</b>对于配置文件core-site.xml和mapred-site.xml在所有节点中都是相同的内容</br>
+所以可以在hadoop0上解压、配置好hadoop后，通过scp拷贝到其它两台机器上,再修改hadoop0上的salves文件加上hadoop1、hadoop2即可</br>
+具体步骤如下:</br>
 ### 解压
-> tar -zxvf hadoop-1.1.2.tar.gz -C /opt/
+> tar -zxvf hadoop-1.1.2.tar.gz -C /opt/</br>
 ### 修改hadoop的配置文件
 > core-site.xml
->> <configuration>
- <property>
-        <name>fs.default.name</name>
-        <value>hdfs://hadoop0:9000</value>
-        <description>change your own hostname</description>
-    </property>
-    <property>
-        <name>hadoop.tmp.dir</name>
-        <value>/opt/hadoop-1.1.2/tmp</value>
-    </property>
-</configuration>
+>> &lt;configuration&gt;</br>
+&lt;property&gt;</br>
+        &lt;name&gt;fs.default.name&lt;/name&gt;</br>
+        &lt;value&gt;hdfs://hadoop0:9000&lt;/value&gt;</br>
+        &lt;description&gt;change your own hostname&lt;/description&gt;</br>
+    &lt;/property&gt;</br>
+    &lt;property&gt;</br>
+        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</br>
+        &lt;value&gt;/opt/hadoop-1.1.2/tmp&lt;/value&gt;</br>
+    &lt;/property&gt;</br>
+&lt;/configuration&gt;</br>
   
 > hdfs-site.xml
->> <configuration>
-<property>
-        <name>dfs.replication</name>
-        <value>2</value>
-    </property>
-    <property>
-        <name>dfs.permissions</name>
-        <value>false</value>
-    </property>
-</configuration>
+>> &lt;configuration></br>
+&lt;property></br>
+        &lt;name>dfs.replication&lt;/name&gt;</br>
+        &lt;value&gt;2&lt;/value&gt;</br>
+    &lt;/property&gt;</br>
+    &lt;property&gt;</br>
+        &lt;name&gt;dfs.permissions&lt;/name&gt;</br>
+        &lt;value&gt;false&lt;/value&gt;</br>
+    &lt;/property&gt;</br>
+&lt;/configuration&gt;</br>
   
 > mapred-site.xml
->> <configuration>
-<property>
-        <name>mapred.job.tracker</name>
-        <value>hadoop0:9001</value>
-        <description>change your own hostname</description>
-    </property>
-</configuration>
+>> &lt;configuration&gt;</br>
+&lt;property&gt;</br>
+        &lt;name&gt;mapred.job.tracker&lt;/name&gt;</br>
+        &lt;value&gt;hadoop0:9001&lt;/value&gt;</br>
+        &lt;description&gt;change your own hostname&lt;/description&gt;</br>
+    &lt;/property&gt;</br>
+&lt;/configuration&gt;</br>
   
 > hadoop-env.sh
 >> export JAVA_HOME=/usr/local/jdk
   
-## 在hadoop1和hadoop2上安装hadoop
+### 在hadoop1和hadoop2上安装hadoop
 在hadoop0上执行下面命令将hadoop拷贝到服务器上
 > scp -r /opt/hadoop-1.1.2/ root@hadoop1:/opt/</br>
   scp -r /opt/hadoop-1.1.2/ root@hadoop2:/opt/
   
   
-## 在hadoop0上修改hadoop-1.1.2/conf/salves
+### 在hadoop0上修改hadoop-1.1.2/conf/salves
 添加上
 > hadoop1</br>
-hadoop2
-  
-  
+hadoop2</br>
+ 
+## 格式化
+在hadoop0节点执行hadoop namenode -format
+
+## 启动
+在hadoop0节点执行start-all.sh
+</br>
+
+## 验证
+* 用jps看进程
+* 通过浏览器访问hadoop0:50070及hadoop0:50030查看相应状态
+
+ 
