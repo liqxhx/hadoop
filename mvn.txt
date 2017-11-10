@@ -1,0 +1,6 @@
+#mvn archetype:generate -DgroupId=com.qhli.demo -DartifactId=spring-boot-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+mvn archetype:generate -DgroupId=com.qhli.demo -DartifactId=hadoop -DarchetypeGroupId=org.codehaus.mojo.archetypes -DarchetypeArtifactId=pom-root -DinteractiveMode=false
+cd hadoop
+mvn archetype:generate -DgroupId=com.qhli.demo -DartifactId=map-reduce  -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false -DarchetypeCatalog=local
+
+
