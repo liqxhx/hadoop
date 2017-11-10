@@ -1,2 +1,0 @@
-# hadoop
-hadoop笔记
