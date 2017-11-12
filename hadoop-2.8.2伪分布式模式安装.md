@@ -3,6 +3,7 @@
 http://hadoop.apache.org/docs/r2.8.2/hadoop-project-dist/hadoop-common/SingleCluster.html
 </br>
 https://www.cnblogs.com/wcwen1990/p/6729413.html
+[hadoop2.8.2官方文档之单节点集群](http://blog.csdn.net/maosijunzi/article/details/78395805)
 
 ## 环境
 * [virtualbox](https://www.virtualbox.org/wiki/Linux_Downloads)
