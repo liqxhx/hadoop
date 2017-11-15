@@ -1,10 +1,32 @@
 # hadoop1.1.2集群环境搭建
+## 目标
+三台服务器：主机名分别是：hadoop0、hadoop1、hadoop2</br>
+其中hadoop0做为namenode，jobtracker，secondarynamenode</br>
+hadoop1、hadoop2为datanode</br>
 
 ## 环境
 * [virtualbox](https://www.virtualbox.org/wiki/Linux_Downloads)
 * [centos6.8_64](http://vault.centos.org/6.8/isos/x86_64/)
 * [javase6](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html)<br>
 * [hadoop-1.1.2](https://archive.apache.org/dist/hadoop/common/hadoop-1.1.2/)<br>
+
+## 修改主机名
+
+> vi /etc/sysconfig/network</br>
+HOSTNAME=hadoop0</br>
+  
+其它两台服务器同样修改</br>
+> HOSTNAME=hadoop1</br>
+HOSTNAME=hadoop2</br>
+
+## 配置hosts
+根据ip配置hosts</br>
+> vi /etc/hosts
+>> 192.168.1.13 hadoop0<br>
+192.168.1.5 hadoop1<br>
+192.168.1.6 hadoop2<br>  
+
+同样修改其它两台服务器
 
 ## 配置服务器(为了方便都是root用户操作)
 ### 更新yum源
@@ -18,12 +40,10 @@
 > `生成密钥对`ssh-keygen -t rsa` 三个回车` <br/>
 `导入公钥` cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys <br/> 
 `拷贝公钥到另外两台服务器上，并导入公钥` scp ~/.ssh/id_rsa.pub root@192.168.1.5:/
+  
+ 三台服务器都配置，相互ssh
 
-## 配置hosts
-> vi /etc/hosts
->> 192.168.1.13 hadoop0<br>
-192.168.1.5 hadoop1<br>
-192.168.1.6 hadoop2<br>
+
 
 
 ## 安装jdk
@@ -33,7 +53,9 @@
 >> export JAVA_HOME=/usr/local/jdk  
 export PATH=$JAVA_HOME/bin:$PATH  
 
-> `生效配置`source /etc/profile
+> `生效配置`source /etc/profile  
+
+scp到其它两台服务器
 
 ## 安装hadoop
 将在hadoop0作为master，充当namenode,secondarynamenode,jobtracker</br>
