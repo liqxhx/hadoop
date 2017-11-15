@@ -34,6 +34,7 @@ HOSTNAME=hadoop2</br>
 
 ### 安装ssh
 > yum -y install openssh-server openssh-clients
+[参考这里](http://blog.csdn.net/u012941811/article/details/18556831)
 ### 关闭防火墙
 > /etc/init.d/iptables stop
 ### 配置ssh免密登录
